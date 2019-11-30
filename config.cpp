@@ -16,16 +16,21 @@ class CfgFunctions
 		class PCT_lookfix
 		{
 			file = "lookfix\functions";
-			class init_lookFixer{
-                postInit = 1;
-            };
+			class lookFixer_init{};
+            class lookFixer_settings{};
 		};
     };
 };
 
 class Extended_PostInit_EventHandlers {
-	class LF{
-		init = "call PCT_fnc_init_lookFixer";
+	class lookFixer_init{
+		init = "call PCT_fnc_lookFixer_init";
 	}		
+};
+
+class Extended_PreInit_EventHandlers {
+    class lookFixer_settings {
+        init = "call PCT_fnc_lookFixer_settings";
+    };
 };
 

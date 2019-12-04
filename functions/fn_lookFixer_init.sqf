@@ -1,4 +1,3 @@
-scriptName "init_lookFixer";
 /*
 	Author: Jack "Pritchard" Viney
 
@@ -11,71 +10,56 @@ scriptName "init_lookFixer";
 	Returns:
 	Nothing
 */
-["MouseMoving",{_this call PCT_fnc_lookFixer}] call CBA_fnc_addDisplayHandler;
-["KeyDown", {_this call PCT_fnc_lfKeyDown}] call CBA_fnc_addDisplayHandler;
-["KeyUp", {_this call PCT_fnc_lfKeyUp}] call CBA_fnc_addDisplayHandler;
 
-lookfix_toggle = true;
-lookfix_keyUp = true;
-lookfix_keys = [];
-lookfix_keys append (actionKeys "optics");
+["MouseMoving",{_this call PCT_fnc_lookfix_moving}] call CBA_fnc_addDisplayHandler;
+PCT_lookFix_badDisplays = [602,160,38580];
 
-PCT_fnc_lfKeyDown = {
-	params ["_displayorcontrol", "_dikCode", "_shift", "_ctrl", "_alt"];
-	if (!_shift && !_ctrl && !_alt) then {
-		if (_dikCode in lookfix_keys) then {
-			if (lookfix_keyUp) then {
-				lookfix_keyUp = false;
-				if (lookfix_toggle) then {
-					lookfix_toggle = false;
-				}
-				else {
-					lookfix_toggle = true;
-				}
-			};
-		};
-	};
-};
 
-PCT_fnc_lfKeyUp = {
-	params ["_displayorcontrol", "_dikCode", "_shift", "_ctrl", "_alt"];
-	if (!_shift && !_ctrl && !_alt) then {
-		if (_dikCode in lookfix_keys) then {
-			if (!lookfix_keyUp) then {
-				lookfix_keyUp = true;
-			};
-		};
-	};
-};
-
-PCT_fnc_lookFixer = {
+PCT_fnc_lookfix_moving = {
+	//Update the mouse delta global variables
 	params ["_display", "_xPos", "_yPos"];
-	private _badDisplays = [602,160,38580];
+	PCT_lookFix_xPos = _xPos;
+	PCT_lookFix_YPos = _yPos;	
+};
 
-	{ if (!isNull findDisplay _x) exitWith {} } forEach _badDisplays;
+addMissionEventHandler ["EachFrame", {
+	if (isGamePaused) exitWith {
+		[0] call PCT_fnc_lookFixer_rotate;
+	};
+
+	{ if (!isNull findDisplay _x) exitWith {
+		[0] call PCT_fnc_lookFixer_rotate;
+	} } forEach PCT_lookFix_badDisplays;
 	//Map Display doesn't work with above method :/
-	if(visibleMap) exitWith {};
+	if(visibleMap) exitWith {
+		[0] call PCT_fnc_lookFixer_rotate;
+	};
 	//Other cases. Dialog catches things that findDisplay doesn't want to
-	if(dialog) exitWith {};
+	if(dialog) exitWith {
+		[0] call PCT_fnc_lookFixer_rotate;
+	};
 	
-	if(freeLook) exitWith {};
+	if(freeLook) exitWith {
+		[0] call PCT_fnc_lookFixer_rotate;
+	};
 
 	//search for banned animations - right now this means ladder climbing.
-	if ((animationState player find "ladder") != -1) exitWith {};
-	
-	if (inputAction "opticsTemp" != 0) exitWith {
-		_zoom = call CBA_fnc_getFov select 1;
-		_azi = getDir player;
-		player setDir _azi + (_xPos * PCT_lookfix_aim_coef) / _zoom;
+	if ((animationState player find "ladder") != -1) exitWith {
+		[0, true] call PCT_fnc_lookFixer_rotate;
+	};
+	//In a vehicle
+	if (!isNull objectParent player) then {
+		[0, true] call PCT_fnc_lookFixer_rotate;
 	};
 
 	//Actually do the turning
-	if(lookfix_toggle) then {
-		_azi = getDir player;
-		player setDir _azi + (_xPos * PCT_lookfix_coef);
+	if(cameraView != "GUNNER") then {
+		[PCT_lookfix_coef] call PCT_fnc_lookFixer_rotate;
 	} else {
-		_zoom = call CBA_fnc_getFov select 1;
-		_azi = getDir player;
-		player setDir _azi + (_xPos * PCT_lookfix_aim_coef) / _zoom;
+		[PCT_lookfix_aim_coef] call PCT_fnc_lookFixer_rotate;
 	};
-};
+
+	//Make sure we don't keep stale data (e.g. if game is paused)
+	PCT_lookFix_xPos = 0;
+	PCT_lookFix_YPos = 0;	
+}];

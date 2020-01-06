@@ -14,6 +14,9 @@
 ["MouseMoving",{_this call PCT_fnc_lookfix_moving}] call CBA_fnc_addDisplayHandler;
 PCT_lookFix_badDisplays = [602,160,38580];
 
+//TEMP
+PCT_alpha = 0.5;
+
 
 PCT_fnc_lookfix_moving = {
 	//Update the mouse delta global variables
@@ -23,7 +26,7 @@ PCT_fnc_lookfix_moving = {
 };
 
 //Personal
-addMissionEventHandler ["EachFrame", {
+addMissionEventHandler ["Draw3D", {
 	if (isGamePaused) exitWith {
 		[0] call PCT_fnc_lookFixer_rotate;
 	};
@@ -73,7 +76,7 @@ addMissionEventHandler ["EachFrame", {
 }];
 
 //Netsync test
-addMissionEventHandler ["EachFrame", { 
+/* addMissionEventHandler ["EachFrame", { 
 	{
 		_sync = _x getVariable ["PCT_sync", nil];
 		
@@ -89,3 +92,4 @@ addMissionEventHandler ["EachFrame", {
 	} forEach allPlayers - [player]; //Exclude ourselves
 }];
 
+ */

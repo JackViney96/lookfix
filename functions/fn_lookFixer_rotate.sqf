@@ -37,14 +37,20 @@ if (PCT_LookFix_allow_vertical) then {
 	};
 };
 
-_azi = getDir player + (PCT_lookFix_xPos * _coef) / _zoom;
+_azi = getDirVisual player + (PCT_lookFix_xPos * _coef) / _zoom;
 _y = _azi; _p = PCT_lookFix_vertical_angle; _r = 0;
 if (isNil "_p") then {
 	_p = 0;
 };
 if (isNil "_y") then {
-	_y = getDir player;
+	_y = getDirVisual player;
 };
-_val = [ [ sin _r,-sin _p,cos _r * cos _p],-_y] call BIS_fnc_rotateVector2D;
+_vUp = [ [ sin _r,-sin _p,cos _r * cos _p],-_y] call BIS_fnc_rotateVector2D;
+
 player setDir _azi;
-player setVectorUp _val;
+player setVectorUp _vUp;
+
+//set the variable for network sync test
+//_arr = [_azi, _val, getPos player, velocity player, vectorDir player];
+_arr = [vectorDirVisual player, vectorUpVisual player];
+player setVariable ["PCT_sync", _arr, true];

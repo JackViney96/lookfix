@@ -22,6 +22,7 @@ PCT_fnc_lookfix_moving = {
 	PCT_lookFix_YPos = _yPos;	
 };
 
+//Personal
 addMissionEventHandler ["EachFrame", {
 	if (isGamePaused) exitWith {
 		[0] call PCT_fnc_lookFixer_rotate;
@@ -30,7 +31,14 @@ addMissionEventHandler ["EachFrame", {
 	{ if (!isNull findDisplay _x) exitWith {
 		[0] call PCT_fnc_lookFixer_rotate;
 	} } forEach PCT_lookFix_badDisplays;
-	//Map Display doesn't work with above method :/
+
+	//Attached to another object
+	if !(isNull attachedTo player) exitWith {
+		//Doesn't seem that any kind of manipulation is possible while the player is attached. Weird state to be in anyway.
+		//[0, true] call PCT_fnc_lookFixer_rotate;
+	};
+
+	//Map Display doesn't work with findDisplay method :/
 	if(visibleMap) exitWith {
 		[0] call PCT_fnc_lookFixer_rotate;
 	};
@@ -48,10 +56,10 @@ addMissionEventHandler ["EachFrame", {
 		[0, true] call PCT_fnc_lookFixer_rotate;
 	};
 	//In a vehicle
-	if (!isNull objectParent player) then {
+	if (!isNull objectParent player) exitWith {
 		[0, true] call PCT_fnc_lookFixer_rotate;
 	};
-
+	
 	//Actually do the turning
 	if(cameraView != "GUNNER") then {
 		[PCT_lookfix_coef] call PCT_fnc_lookFixer_rotate;
@@ -63,3 +71,21 @@ addMissionEventHandler ["EachFrame", {
 	PCT_lookFix_xPos = 0;
 	PCT_lookFix_YPos = 0;	
 }];
+
+//Netsync test
+addMissionEventHandler ["EachFrame", { 
+	{
+		_sync = _x getVariable ["PCT_sync", nil];
+		
+		if !(isNil "_sync") then {
+		//_sync params ["_azi", "_val", "_pos", "_vel", "_vDir"];
+		_sync params ["_vDir", "_vUp", "_pos"];
+			//_x setDir _azi;
+			_x setVectorDirAndUp [_vDir, _vUp];
+			//_x setVectorUp _val;
+			//_x setPos _pos;
+			//_x setVelocity _vel;
+		};
+	} forEach allPlayers - [player]; //Exclude ourselves
+}];
+

@@ -1,3 +1,14 @@
+PCT_vec = [(getCameraViewDirection player), (player weaponDirection currentWeapon player), 0.1] call BIS_fnc_lerpVector; 
+
+if !(((animationState player) find "sras") isEqualTo -1 ) then {
+	if (((animationState player) find "mrun") isEqualTo -1 ) then {
+		if (((animationState player) find "meva") isEqualTo -1 ) then {
+			player setVectorDir PCT_vec;
+		};
+	};
+};
+
+
 /* _beg = ASLToAGL eyePos player;
 	_endE = (_beg vectorAdd (eyeDirection player vectorMultiply 100));
 	drawLine3D [ _beg, _endE, [0,1,0,1]];

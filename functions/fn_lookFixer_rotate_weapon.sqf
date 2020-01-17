@@ -1,61 +1,11 @@
-/*
-	Author: Jack "Pritchard" Viney
-
-	Description:
-	Called every frame to rotate the character. 
-	Very, very hacky. Sorry, BI!
-
-	Parameter(s):
-	_coef: The movement coefficient that the user can set in the addon options.
-	_reset: used when the player's angle needs to be reset (climbed a ladder, etc)
-
-	Returns:
-	Nothing
-*/
-params [["_coef", 0], ["_reset", false]];
-_zoom = call CBA_fnc_getFov select 1;
-
-if (isNil "PCT_lookFix_vertical_angle") then {
-	PCT_lookFix_vertical_angle = 0;
-};
-
-if (PCT_LookFix_allow_vertical) then {
-	//Vertical delta
-	PCT_lookFix_vertical_angle = PCT_lookFix_vertical_angle - (PCT_lookFix_YPos * _coef) / _zoom;
-
-	//Vertical cap
-	if (PCT_lookFix_vertical_angle < -PCT_lookFix_vertical_cap) then {
-		PCT_lookFix_vertical_angle = -PCT_lookFix_vertical_cap;
-	};
-	if (PCT_lookFix_vertical_angle > PCT_lookFix_vertical_cap) then {
-		PCT_lookFix_vertical_angle = PCT_lookFix_vertical_cap;
-	};
-
-	//Reset player angle 
-	if (_reset) then {
-		PCT_lookFix_vertical_angle = 0;
-	};
-};
-
-	_beg = ASLToAGL eyePos player;
+/* _beg = ASLToAGL eyePos player;
 	_endE = (_beg vectorAdd (eyeDirection player vectorMultiply 100));
 	drawLine3D [ _beg, _endE, [0,1,0,1]];
 	_endC = (_beg vectorAdd (getCameraViewDirection player vectorMultiply 100));
 	drawLine3D [ _beg, _endC, [0,0,1,1]];
 	_endW = (_beg vectorAdd (player weaponDirection currentWeapon player vectorMultiply 100));
-	drawLine3D [_beg, _endW, [1,0,0,1]];
+	drawLine3D [_beg, _endW, [1,0,0,1]]; */
 
-//Kinda decent
-/* value = [(PCT_lookFix_xPos * _coef) / _zoom, -1, 1] call BIS_fnc_clamp;
-value = parseNumber (value toFixed 3);
-systemChat str value;
-
-result = [vectorDir player, vectorUp player, -value] call CBA_fnc_vectRotate3D; 
- 
-player setVectorDir result;
-PCT_lookFix_xPos = 0; */
-
-/////
 /////
 /* PCT_old_xPos = _xPos;
 

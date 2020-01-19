@@ -20,6 +20,8 @@ class CfgFunctions
 			class lookFixer_init{};
 			class lookFixer_type{};
             class lookFixer_rotate_vector{};
+			class lookFixer_rotate_freelook{};
+			class lookFixer_rotate_weapon{};
 			class lookFixer_rotate_dir{};
             class lookFixer_settings{};
 		};
@@ -38,3 +40,5 @@ class Extended_PreInit_EventHandlers {
     };
 };
 
+//TODO:
+//GUI popup for freelook mode

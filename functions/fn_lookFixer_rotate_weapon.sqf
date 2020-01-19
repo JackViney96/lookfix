@@ -1,13 +1,9 @@
-PCT_vec = [(getCameraViewDirection player), (player weaponDirection currentWeapon player), 0.1] call BIS_fnc_lerpVector; 
-
-if !(((animationState player) find "sras") isEqualTo -1 ) then {
-	if (((animationState player) find "mrun") isEqualTo -1 ) then {
-		if (((animationState player) find "meva") isEqualTo -1 ) then {
-			player setVectorDir PCT_vec;
-		};
-	};
+params [["_coef", 0], ["_reset", false]];
+systemChat format ["[%1] PRITCHARD: reset = %2", time, _reset];
+if (_reset isequalto false) then {
+	PCT_vec = [(getCameraViewDirection player), (player weaponDirection currentWeapon player), 0.1] call BIS_fnc_lerpVector; 
+	player setVectorDir PCT_vec;
 };
-
 
 /* _beg = ASLToAGL eyePos player;
 	_endE = (_beg vectorAdd (eyeDirection player vectorMultiply 100));

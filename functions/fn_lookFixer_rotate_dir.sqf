@@ -20,10 +20,12 @@ if (PCT_LookFix_allow_vertical) then {
 	//Vertical delta
 	PCT_lookFix_vertical_angle = [ PCT_lookFix_vertical_angle - (PCT_lookFix_yPos * _coef) / _zoom, -PCT_lookFix_vertical_cap, PCT_lookFix_vertical_cap] call BIS_fnc_clamp;
 
-	//Reset player angle 
-	if (_reset) then {
-		PCT_lookFix_vertical_angle = 0;
-	};
+
+};
+
+//Reset player angle 
+if (_reset) then {
+	PCT_lookFix_vertical_angle = 0;
 };
 
 _azi = getDirVisual player + (PCT_lookFix_xPos * _coef) / _zoom;

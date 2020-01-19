@@ -13,7 +13,7 @@
 
 ["MouseMoving",{_this call PCT_fnc_lookfix_moving}] call CBA_fnc_addDisplayHandler;
 PCT_lookFix_badDisplays = [602,160,38580];
-
+PCT_lookFix_badAnimations = ["ladder", "mrun", "meva"];
 
 PCT_fnc_lookfix_moving = {
 	//Update the mouse delta global variables
@@ -46,15 +46,23 @@ PCT_EH_id = addMissionEventHandler ["EachFrame", {
 	if(dialog) exitWith {
 		[0] call PCT_fnc_lookfixer_type;
 	};
-	
+
+
+	//TODO: removeme
 	if(freeLook) exitWith {
 		[0] call PCT_fnc_lookfixer_type;
 	};
 
+	//TODO: Parachute exception
+
 	//search for banned animations - right now this means ladder climbing.
-	if ((animationState player find "ladder") != -1) exitWith {
+	_animationCheck = {
+			if ((animationState player find _x) != -1) exitWith {true};
+	} forEach PCT_lookfix_badAnimations;
+	if (_animationCheck) exitWith {
 		[0, true] call PCT_fnc_lookfixer_type;
 	};
+	
 	//In a vehicle
 	if (!isNull objectParent player) exitWith {
 		[0, true] call PCT_fnc_lookfixer_type;
@@ -66,6 +74,17 @@ PCT_EH_id = addMissionEventHandler ["EachFrame", {
 	} else {
 		[PCT_lookfix_aim_coef] call PCT_fnc_lookfixer_type;
 	};
+
+	if (PCT_lookFix_RTZ) then {
+	if ((cameraView isequalto "GUNNER")) then {
+		if (PCT_lookFix_vertical_angle < 0) then { 
+			PCT_lookFix_vertical_angle = PCT_lookFix_vertical_angle + abs(PCT_lookFix_vertical_angle * PCT_lookfix_RTZ_constant); 
+		}; 
+		if (PCT_lookFix_vertical_angle > 0) then { 
+			PCT_lookFix_vertical_angle = PCT_lookFix_vertical_angle - abs(PCT_lookFix_vertical_angle * PCT_lookfix_RTZ_constant);
+		}; 
+	};
+};
 
 	//Make sure we don't keep stale data (e.g. if game is paused)
 	PCT_lookFix_xPos = 0;

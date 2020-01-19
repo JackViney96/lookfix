@@ -39,5 +39,18 @@
     [0, 15, 0, 0] // data for this setting: [min, max, default, number of shown trailing decimals]
 ] call CBA_fnc_addSetting;
 
+[
+    "PCT_lookFix_RTZ", // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
+    "CHECKBOX", // setting type
+    ["Return to Zero","Corrects for misaligned weapon visuals when aiming down sights."], // Pretty name shown inside the ingame settings menu. Can be stringtable entry.
+    ["Aiming Deadzone Fix", "Vertical Smoothing"], // Pretty name of the category where the setting can be found. Can be stringtable entry.
+    true
+] call CBA_fnc_addSetting;
 
-
+[
+    "PCT_lookfix_RTZ_constant", // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
+    "SLIDER", // setting type
+    ["Return To Zero Rate","How quickly to bring the weapon back into alignment."], // Pretty name shown inside the ingame settings menu. Can be stringtable entry.
+    ["Aiming Deadzone Fix", "Vertical Smoothing"], // Pretty name of the category where the setting can be found. Can be stringtable entry.
+    [0.01, 0.5, 0.1, 2] // data for this setting: [min, max, default, number of shown trailing decimals]
+] call CBA_fnc_addSetting;

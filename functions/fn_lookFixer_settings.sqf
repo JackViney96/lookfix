@@ -2,10 +2,17 @@
     "PCT_lookFix_function", // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
     "LIST", // setting type
     ["Method","Select different models of functionality to suit preference. See Steam Workshop page for caveats."], // Pretty name shown inside the ingame settings menu. Can be stringtable entry.
-    ["Aiming Deadzone Fix"], // Pretty name of the category where the setting can be found. Can be stringtable entry.
-    [["disable", "PCT_fnc_lookFixer_rotate_dir", "PCT_fnc_lookFixer_rotate_vector"], ["Disabled","Classic", "Vector-based"], 2]
+    ["Aiming Deadzone Fix", "Behaviour"], // Pretty name of the category where the setting can be found. Can be stringtable entry.
+    [[-1, 0, 1], ["Disabled","Classic", "Vector-based"], 2]
 ] call CBA_fnc_addSetting;
 
+[
+    "PCT_lookFix_freelook", // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
+    "CHECKBOX", // setting type
+    ["Freelook Trick","Make sure to set up your controls correctly and have a coefficient set for aiming. Helps to center the weapon when aiming down sights."], // Pretty name shown inside the ingame settings menu. Can be stringtable entry.
+    ["Aiming Deadzone Fix", "Behaviour"], // Pretty name of the category where the setting can be found. Can be stringtable entry.
+    false
+] call CBA_fnc_addSetting;
 
 [
     "PCT_lookfix_coef", // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
@@ -54,3 +61,4 @@
     ["Aiming Deadzone Fix", "Vertical Smoothing"], // Pretty name of the category where the setting can be found. Can be stringtable entry.
     [0.01, 0.5, 0.1, 2] // data for this setting: [min, max, default, number of shown trailing decimals]
 ] call CBA_fnc_addSetting;
+

@@ -27,6 +27,8 @@ The one caveat to this method of operation is first-person jitter. For reasons I
 
 If you play exclusively in singleplayer with this mod, classic mode is more stable.
 
-## Future plans
-Aside from bug fixing the new Vector-based method (pull requests etc. are appreciated!), I am interested in expanding the variety of modes on offer in order to suit the tastes of players. Finding a method for turning the player's head/torso independently would allow for 'return to zero' behaviour for the aiming deadzone, and some brief experiments have already been done with making the player's view follow the weapon muzzle - similar to vector-based mode, but in testing it has shown zero jittering issues.
+## Centered Aim ("Freelook Trick")
+By enabling this option, the behaviour of this mod when the player is using Freelook will change. Specifically, it is designed for the player to be using the same binding for 'Look' as they are for 'Optics Temporary' (or 'Freelook' and 'Optics' if you prefer to toggle) - with this combination, the player will find that their aim automatically snaps to the center of the screen and moves without any deadzone behaviour. It isn't perfect, but it works.
 
+## Future plans
+Aside from bug fixing the new Vector-based method (pull requests etc. are appreciated!), I am interested in expanding the variety of modes on offer in order to suit the tastes of players. 

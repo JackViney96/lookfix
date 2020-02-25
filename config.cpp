@@ -18,6 +18,7 @@ class CfgFunctions
 		{
 			file = "lookfix\functions";
 			class lookFixer_init{};
+			class lookFixer_RTZ{};
 			class lookFixer_type{};
             class lookFixer_rotate_vector{};
 			class lookFixer_rotate_dir{};

@@ -24,6 +24,9 @@ PCT_fnc_lookfix_moving = {
 
 //Personal
 PCT_EH_id = addMissionEventHandler ["EachFrame", {
+	//So we can still 'exitWith' even when we're in a nested scope
+	scopeName "PCT_lookfix_main";
+
 	if (isGamePaused) exitWith {
 		[0] call PCT_fnc_lookfixer_type;
 	};
@@ -49,18 +52,34 @@ PCT_EH_id = addMissionEventHandler ["EachFrame", {
 
 
 	//TODO: removeme
-	if(freeLook) exitWith {
-		[0] call PCT_fnc_lookfixer_type;
+	if (PCT_lookFix_freelook) then {	
+		if(freeLook) then {
+			if !(cameraView isequalto "GUNNER") then {
+				call PCT_fnc_lookfixer_RTZ;
+				[0] call PCT_fnc_lookfixer_type;
+				//Need to use breakOut due to nesting?
+				breakOut "PCT_lookfix_main";
+			};
+		};
+		//Else, do nothing!
+	}
+	else {
+		if(freeLook) then {
+			call PCT_fnc_lookfixer_RTZ;
+			[0] call PCT_fnc_lookfixer_type;
+			breakOut "PCT_lookfix_main";
+		};
 	};
 
 	//TODO: Parachute exception
 
-	//search for banned animations - right now this means ladder climbing.
+	//search for banned animations
 	_animationCheck = {
 			if ((animationState player find _x) != -1) exitWith {true};
 	} forEach PCT_lookfix_badAnimations;
 	if (_animationCheck) exitWith {
-		[0, true] call PCT_fnc_lookfixer_type;
+		call PCT_fnc_lookfixer_RTZ;
+		[0] call PCT_fnc_lookfixer_type;		
 	};
 	
 	//In a vehicle
@@ -70,21 +89,16 @@ PCT_EH_id = addMissionEventHandler ["EachFrame", {
 	
 	//Actually do the turning
 	if(cameraView != "GUNNER") then {
-		[PCT_lookfix_coef] call PCT_fnc_lookfixer_type;
+		[PCT_lookfix_coef] call PCT_fnc_lookfixer_type;		
 	} else {
 		[PCT_lookfix_aim_coef] call PCT_fnc_lookfixer_type;
 	};
 
 	if (PCT_lookFix_RTZ) then {
-	if ((cameraView isequalto "GUNNER")) then {
-		if (PCT_lookFix_vertical_angle < 0) then { 
-			PCT_lookFix_vertical_angle = PCT_lookFix_vertical_angle + abs(PCT_lookFix_vertical_angle * PCT_lookfix_RTZ_constant); 
-		}; 
-		if (PCT_lookFix_vertical_angle > 0) then { 
-			PCT_lookFix_vertical_angle = PCT_lookFix_vertical_angle - abs(PCT_lookFix_vertical_angle * PCT_lookfix_RTZ_constant);
-		}; 
+		if ((cameraView isequalto "GUNNER")) then {
+			call PCT_fnc_lookfixer_RTZ;
+		};
 	};
-};
 
 	//Make sure we don't keep stale data (e.g. if game is paused)
 	PCT_lookFix_xPos = 0;

@@ -13,7 +13,7 @@
 
 ["MouseMoving",{_this call PCT_fnc_lookfix_moving}] call CBA_fnc_addDisplayHandler;
 PCT_lookFix_badDisplays = [602,160,38580];
-PCT_lookFix_badAnimations = ["ladder", "mrun", "meva"];
+PCT_lookFix_badAnimations = ["ladder", "mrun", "meva", "par"];
 
 PCT_fnc_lookfix_moving = {
 	//Update the mouse delta global variables
@@ -23,7 +23,7 @@ PCT_fnc_lookfix_moving = {
 };
 
 //Personal
-PCT_EH_id = addMissionEventHandler ["EachFrame", {
+PCT_lookFix_id = addMissionEventHandler ["EachFrame", {
 	//So we can still 'exitWith' even when we're in a nested scope
 	scopeName "PCT_lookfix_main";
 
